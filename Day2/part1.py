@@ -15,7 +15,15 @@ def convert_to_opponent_value(selection):
         return "B"
     elif selection == "Z":
         return "C"
-    
+
+def get_selection_score(selection):
+    if selection == "A":
+        return 1
+    elif selection == "B":
+        return 2
+    elif selection == "C":
+        return 3
+
 # 0 -> loss, 3 -> draw, 6 -> win
 def get_win_lose_draw_score(opponent, player):
     win_pairs = [("A", "B"), ("B", "C"), ("C", "A")]
@@ -26,14 +34,6 @@ def get_win_lose_draw_score(opponent, player):
         return 6
     if lose_pairs.count((opponent, player)) > 0:
         return 0
-
-def get_selection_score(selection):
-    if selection == "A":
-        return 1
-    elif selection == "B":
-        return 2
-    elif selection == "C":
-        return 3
 
 def calculate_total_score(data):
     score = 0
