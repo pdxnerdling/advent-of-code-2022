@@ -1,4 +1,3 @@
-from operator import itemgetter
 from sys import argv
 
 START = 0 

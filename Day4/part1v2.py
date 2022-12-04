@@ -1,4 +1,3 @@
-from operator import itemgetter
 from sys import argv
 
 def get_elf_assigment_ends_in_lowest_start_order(line):
