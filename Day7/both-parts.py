@@ -1,5 +1,4 @@
 from sys import argv
-from functools import reduce
 
 def get_file_size(line):
     split = line.split(" ")
