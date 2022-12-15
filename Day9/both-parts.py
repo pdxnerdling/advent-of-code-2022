@@ -1,5 +1,7 @@
 from sys import argv
 
+LENGTH = 1
+
 def get_directions(filename):
     file = open(filename, 'r')
     data = file.read().splitlines()
@@ -12,7 +14,7 @@ def is_positive(int):
 def is_negative(int):
     return int < 0
 
-def new_tail_location(H, T):
+def new_tail_location(H, T, i):
     path = {"00"}
     while abs(H[0]-T[0]) > 1 or abs(H[1] - T[1]) > 1:
         if H[0] > T[0]: 
@@ -30,30 +32,35 @@ def get_positions_visited(instructions):
     visited = {"00"}
     H = [0,0]
     T = [0,0]
-    rope = [[0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0]]
+    rope = [ [0,0] for _ in range(LENGTH + 1) ]
     for instruction in instructions:
-        left_or_right = instruction[0] == "L" or instruction[0] == "R"
+        #print(instruction)
         if instruction[0] == "D" or instruction[0] == "L":
             direction = -1
         else:
             direction = 1 
-        if left_or_right:
+        if instruction[0] == "L" or instruction[0] == "R":
             H[0] = H[0] + (instruction[1] * direction)
         else:
             H[1] = H[1] + (instruction[1] * direction)
-        rope[0] = H
-        loop_count = 9
-        for i in range(loop_count):
-            T, path = new_tail_location(rope[i], rope[i+1])
-            rope[i+1] = T
-        visited.update(path)
+        for _ in range(instruction[1]):
+            if instruction[0] == "D":
+                rope[0][1] = rope[0][1] + -1
+            if instruction[0] == "U":
+                rope[0][1] = rope[0][1] + 1
+            if instruction[0] == "L":
+                rope[0][0] = rope[0][0] + -1
+            if instruction[0] == "R":
+                rope[0][0] = rope[0][0] + 1
+            for i in range(LENGTH):
+                T, path = new_tail_location(rope[i], rope[i+1], i)
+                rope[i+1] = T
+            visited.update(path)
     return visited
 
 if __name__ == "__main__":
     filename = argv[1]
+    LENGTH = int(argv[2])
     directions = get_directions(filename)
-    grid = get_positions_visited(directions)
-    print("result: " + str(len(grid)))
-
-# too high 2478
-# too low 2439
+    visit_count = get_positions_visited(directions)
+    print("Rope Length " + str(LENGTH) +" Result: " + str(len(visit_count)))
